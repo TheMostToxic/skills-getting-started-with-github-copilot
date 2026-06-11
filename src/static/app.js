@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   // Function to fetch activities from API
-  async function fetchActivities() {
+  async function fetchActivities(selectedActivity = "") {
     try {
       activitiesList.innerHTML = `<p class="loading">Loading activities...</p>`;
       activitySelect.innerHTML = `<option value="">-- Select an activity --</option>`;
@@ -63,6 +63,9 @@ document.addEventListener("DOMContentLoaded", () => {
         const option = document.createElement("option");
         option.value = name;
         option.textContent = name;
+        if (name === selectedActivity) {
+          option.selected = true;
+        }
         activitySelect.appendChild(option);
       });
     } catch (error) {
@@ -92,7 +95,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const result = await response.json();
       if (response.ok) {
         showMessage("success", result.message);
-        fetchActivities();
+        await fetchActivities(activity);
       } else {
         showMessage("error", result.detail || "Failed to remove participant");
       }
@@ -122,7 +125,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (response.ok) {
         showMessage("success", result.message);
         signupForm.reset();
-        await fetchActivities();
+        await fetchActivities(activity);
       } else {
         showMessage("error", result.detail || "An error occurred");
       }
