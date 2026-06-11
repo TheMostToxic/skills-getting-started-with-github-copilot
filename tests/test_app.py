@@ -38,6 +38,7 @@ def test_get_activities_returns_activity_list():
 
     # Assert
     assert response.status_code == 200
+
     data = response.json()
     assert expected_activity in data
     assert "description" in data[expected_activity]
@@ -50,7 +51,10 @@ def test_signup_for_activity_succeeds():
     expected_message = {"message": f"Signed up {email} for {activity_name}"}
 
     # Act
-    response = client.post(f"/activities/{activity_name}/signup", params={"email": email})
+    response = client.post(
+        f"/activities/{activity_name}/signup",
+        params={"email": email},
+    )
 
     # Assert
     assert response.status_code == 200
@@ -64,7 +68,10 @@ def test_signup_for_activity_duplicate_returns_bad_request():
     email = "michael@mergington.edu"
 
     # Act
-    response = client.post(f"/activities/{activity_name}/signup", params={"email": email})
+    response = client.post(
+        f"/activities/{activity_name}/signup",
+        params={"email": email},
+    )
 
     # Assert
     assert response.status_code == 400
@@ -77,7 +84,10 @@ def test_signup_for_unknown_activity_returns_not_found():
     email = "student@mergington.edu"
 
     # Act
-    response = client.post(f"/activities/{activity_name}/signup", params={"email": email})
+    response = client.post(
+        f"/activities/{activity_name}/signup",
+        params={"email": email},
+    )
 
     # Assert
     assert response.status_code == 404
@@ -91,7 +101,10 @@ def test_remove_participant_succeeds():
     expected_message = {"message": f"Removed {email} from {activity_name}"}
 
     # Act
-    response = client.delete(f"/activities/{activity_name}/participants", params={"email": email})
+    response = client.delete(
+        f"/activities/{activity_name}/participants",
+        params={"email": email},
+    )
 
     # Assert
     assert response.status_code == 200
@@ -105,7 +118,10 @@ def test_remove_nonexistent_participant_returns_not_found():
     email = "notregistered@mergington.edu"
 
     # Act
-    response = client.delete(f"/activities/{activity_name}/participants", params={"email": email})
+    response = client.delete(
+        f"/activities/{activity_name}/participants",
+        params={"email": email},
+    )
 
     # Assert
     assert response.status_code == 404
@@ -118,7 +134,10 @@ def test_remove_participant_from_unknown_activity_returns_not_found():
     email = "student@mergington.edu"
 
     # Act
-    response = client.delete(f"/activities/{activity_name}/participants", params={"email": email})
+    response = client.delete(
+        f"/activities/{activity_name}/participants",
+        params={"email": email},
+    )
 
     # Assert
     assert response.status_code == 404
