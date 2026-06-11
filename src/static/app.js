@@ -15,6 +15,36 @@ document.addEventListener("DOMContentLoaded", () => {
     setTimeout(hideMessage, 5000);
   };
 
+  const renderParticipantList = (activityName, participants) => {
+    const count = participants?.length || 0;
+    if (!count) {
+      return `
+        <div class="participants-section info">
+          <p class="participants-heading">Participants</p>
+          <p class="no-participants">No participants have signed up yet.</p>
+        </div>`;
+    }
+
+    return `
+      <div class="participants-section">
+        <p class="participants-heading">Participants (${count})</p>
+        <ul class="participants-list">
+          ${participants.map((participant) => `
+            <li class="participant-item">
+              <span>${participant}</span>
+              <button
+                type="button"
+                class="remove-participant"
+                data-activity="${activityName}"
+                data-email="${participant}"
+                aria-label="Unregister ${participant}"
+                title="Unregister ${participant}"
+              >✕</button>
+            </li>`).join("")}
+        </ul>
+      </div>`;
+  };
+
   // Function to fetch activities from API
   async function fetchActivities(selectedActivity = "") {
     try {
@@ -33,21 +63,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const activityCard = document.createElement("div");
         activityCard.className = "activity-card";
 
-        const spotsLeft = details.max_participants - details.participants.length;
-        const participantsHtml = details.participants && details.participants.length
-          ? `<div class="participants-section">
-               <p class="participants-heading">Participants (${details.participants.length})</p>
-               <ul class="participants-list">
-                 ${details.participants.map((participant) => `<li class="participant-item">
-                   <span>${participant}</span>
-                   <button type="button" class="remove-participant" data-activity="${name}" data-email="${participant}" aria-label="Remove ${participant}">✕</button>
-                 </li>`).join("")}
-               </ul>
-             </div>`
-          : `<div class="participants-section info">
-               <p class="participants-heading">Participants</p>
-               <p class="no-participants">No participants yet</p>
-             </div>`;
+        const spotsLeft = details.max_participants - (details.participants?.length || 0);
+        const participantsHtml = renderParticipantList(name, details.participants);
 
         activityCard.innerHTML = `
           <h4>${name}</h4>
