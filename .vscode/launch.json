@@ -13,7 +13,11 @@
         "src.app:app",
         "--reload",
         "--reload-include",
-        "src/static/*"
+        "src/static/*",
+        "--host",
+        "0.0.0.0",
+        "--port",
+        "8080"
       ],
       "jinja": true
     }
