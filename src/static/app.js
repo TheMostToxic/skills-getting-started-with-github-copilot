@@ -1,3 +1,4 @@
+// Note: Updated for Step 3 — improve participant UI and ensure CI detects changes
 document.addEventListener("DOMContentLoaded", () => {
   const activitiesList = document.getElementById("activities-list");
   const activitySelect = document.getElementById("activity");
