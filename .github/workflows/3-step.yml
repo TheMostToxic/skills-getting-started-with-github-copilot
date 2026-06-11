@@ -85,7 +85,10 @@ jobs:
           TARGET_FILE: src/static/app.js
         with:
           script: |
-            const changedFiles = process.env.CHANGED_FILES.split(' ');
+            const changedFilesRaw = process.env.CHANGED_FILES || '';
+            console.log('Raw CHANGED_FILES:', changedFilesRaw);
+            const changedFiles = changedFilesRaw.trim().split(/\s+/).filter(Boolean);
+            console.log('Parsed changed files array:', changedFiles);
             const targetFile = process.env.TARGET_FILE;
             if (!changedFiles.includes(targetFile)) {
               core.setFailed(`${targetFile} was not modified`);
@@ -100,7 +103,10 @@ jobs:
           TARGET_FILE: src/static/styles.css
         with:
           script: |
-            const changedFiles = process.env.CHANGED_FILES.split(' ');
+            const changedFilesRaw = process.env.CHANGED_FILES || '';
+            console.log('Raw CHANGED_FILES:', changedFilesRaw);
+            const changedFiles = changedFilesRaw.trim().split(/\s+/).filter(Boolean);
+            console.log('Parsed changed files array:', changedFiles);
             const targetFile = process.env.TARGET_FILE;
             if (!changedFiles.includes(targetFile)) {
               core.setFailed(`${targetFile} was not modified`);
