@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const showMessage = (type, text) => {
     messageDiv.textContent = text;
-    messageDiv.className = type;
+    messageDiv.className = `message ${type}`;
     messageDiv.classList.remove("hidden");
     setTimeout(hideMessage, 5000);
   };
@@ -18,6 +18,9 @@ document.addEventListener("DOMContentLoaded", () => {
   // Function to fetch activities from API
   async function fetchActivities() {
     try {
+      activitiesList.innerHTML = `<p class="loading">Loading activities...</p>`;
+      activitySelect.innerHTML = `<option value="">-- Select an activity --</option>`;
+
       const response = await fetch("/activities");
       const activities = await response.json();
 
@@ -33,7 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const spotsLeft = details.max_participants - details.participants.length;
         const participantsHtml = details.participants && details.participants.length
           ? `<div class="participants-section">
-               <p class="participants-heading">Participants</p>
+               <p class="participants-heading">Participants (${details.participants.length})</p>
                <ul class="participants-list">
                  ${details.participants.map((participant) => `<li class="participant-item">
                    <span>${participant}</span>
@@ -94,9 +97,7 @@ document.addEventListener("DOMContentLoaded", () => {
         showMessage("error", result.detail || "Failed to remove participant");
       }
     } catch (error) {
-      messageDiv.textContent = "Failed to remove participant. Please try again.";
-      messageDiv.className = "error";
-      messageDiv.classList.remove("hidden");
+      showMessage("error", "Failed to remove participant. Please try again.");
       console.error("Error removing participant:", error);
     }
   });
@@ -126,9 +127,7 @@ document.addEventListener("DOMContentLoaded", () => {
         showMessage("error", result.detail || "An error occurred");
       }
     } catch (error) {
-      messageDiv.textContent = "Failed to sign up. Please try again.";
-      messageDiv.className = "error";
-      messageDiv.classList.remove("hidden");
+      showMessage("error", "Failed to sign up. Please try again.");
       console.error("Error signing up:", error);
     }
   });
