@@ -1,10 +1,18 @@
+/**
+ * Activity Signup Application
+ * Handles fetching activities, displaying them, and managing user signups
+ */
+
 document.addEventListener("DOMContentLoaded", () => {
   const activitiesList = document.getElementById("activities-list");
   const activitySelect = document.getElementById("activity");
   const signupForm = document.getElementById("signup-form");
   const messageDiv = document.getElementById("message");
 
-  // Function to fetch activities from API
+  /**
+   * Fetches all activities from the backend API
+   * Displays them in both a list and dropdown format
+   */
   async function fetchActivities() {
     try {
       const response = await fetch("/activities");
@@ -57,7 +65,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Handle participant removal
+  /**
+   * Handles removing a participant from an activity
+   * Listens for clicks on remove buttons and sends DELETE request
+   */
   activitiesList.addEventListener("click", async (event) => {
     if (!event.target.classList.contains("remove-participant")) {
       return;
@@ -97,12 +108,26 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Handle form submission
+  /**
+   * Handles form submission for signing up for an activity
+   * Validates input and sends POST request to backend
+   */
   signupForm.addEventListener("submit", async (event) => {
     event.preventDefault();
 
     const email = document.getElementById("email").value;
     const activity = document.getElementById("activity").value;
+
+    // Validate that an activity is selected
+    if (!activity) {
+      messageDiv.textContent = "Please select an activity";
+      messageDiv.className = "error";
+      messageDiv.classList.remove("hidden");
+      setTimeout(() => {
+        messageDiv.classList.add("hidden");
+      }, 5000);
+      return;
+    }
 
     try {
       const response = await fetch(
@@ -138,6 +163,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Initialize app
+  // Initialize app by loading activities
   fetchActivities();
 });
