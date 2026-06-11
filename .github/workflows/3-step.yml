@@ -62,7 +62,9 @@ jobs:
         id: changed-files
         uses: tj-actions/changed-files@v47
         with:
-          base_sha: ${{ github.event.repository.default_branch }}
+          # For push events, use the previous commit SHA so the action can
+          # compute the files changed in the push range reliably.
+          base_sha: ${{ github.event.before }}
           files: |
             src/static/app.js
             src/static/styles.css
