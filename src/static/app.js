@@ -1,4 +1,5 @@
 // Note: Updated for Step 3 — improve participant UI and ensure CI detects changes
+// Touch: pushed to trigger CI check at 2026-06-11 00:00:00Z
 document.addEventListener("DOMContentLoaded", () => {
   const activitiesList = document.getElementById("activities-list");
   const activitySelect = document.getElementById("activity");
