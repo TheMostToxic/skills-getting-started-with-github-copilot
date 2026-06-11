@@ -27,21 +27,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const activityCard = document.createElement("div");
         activityCard.className = "activity-card";
 
-        const spotsLeft = details.max_participants - details.participants.length;
-        const participantsHtml = details.participants && details.participants.length
-          ? `<div class="participants-section">
-               <p class="participants-heading">Participants</p>
-               <ul class="participants-list">
-                 ${details.participants.map((participant) => `<li class="participant-item">
-                   <span>${participant}</span>
-                   <button type="button" class="remove-participant" data-activity="${name}" data-email="${participant}" aria-label="Remove ${participant}">✕</button>
-                 </li>`).join("")}
-               </ul>
-             </div>`
-          : `<div class="participants-section info">
-               <p class="participants-heading">Participants</p>
-               <p class="no-participants">No participants yet</p>
-             </div>`;
+        const spotsLeft = details.max_participants - (details.participants?.length || 0);
+        const participantsHtml = renderParticipantList(name, details.participants);
 
         activityCard.innerHTML = `
           <h4>${name}</h4>
@@ -63,6 +50,38 @@ document.addEventListener("DOMContentLoaded", () => {
       activitiesList.innerHTML = "<p>Failed to load activities. Please try again later.</p>";
       console.error("Error fetching activities:", error);
     }
+  }
+
+  function renderParticipantList(activityName, participants = []) {
+    if (!participants?.length) {
+      return `
+        <div class="participants-section info">
+          <p class="participants-heading">Participants</p>
+          <p class="no-participants">No participants yet</p>
+        </div>`;
+    }
+
+    return `
+      <div class="participants-section">
+        <p class="participants-heading">Participants</p>
+        <div class="participants-list">
+          ${participants
+            .map(
+              (participant) => `
+                <div class="participant-item">
+                  <span>${participant}</span>
+                  <button
+                    type="button"
+                    class="remove-participant"
+                    data-activity="${activityName}"
+                    data-email="${participant}"
+                    aria-label="Remove ${participant}"
+                  >✕</button>
+                </div>`
+            )
+            .join("")}
+        </div>
+      </div>`;
   }
 
   /**

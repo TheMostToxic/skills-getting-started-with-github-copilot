@@ -94,8 +94,11 @@ section h3 {
   list-style: none;
   margin: 0;
   padding: 0;
-  max-height: 150px;
+  max-height: 220px;
   overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .participant-item {
@@ -103,34 +106,42 @@ section h3 {
   align-items: center;
   justify-content: space-between;
   background: #ffffff;
-  border: 1px solid #e1e6fb;
-  padding: 10px 12px;
-  margin-bottom: 8px;
-  border-radius: 8px;
+  border: 1px solid #d3d7f6;
+  padding: 12px 14px;
+  border-radius: 10px;
   font-size: 14px;
   color: #333;
+  gap: 12px;
+}
+
+.participant-item span {
+  display: inline-block;
+  overflow-wrap: anywhere;
+}
+
+.remove-participant {
+  width: 30px;
+  height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #f8d7da;
+  border: 1px solid #f5c6cb;
+  color: #c62828;
+  font-size: 16px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.remove-participant:hover,
+.remove-participant:focus {
+  background-color: #f1b0b7;
+  transform: scale(1.05);
 }
 
 .participant-item:last-child {
   margin-bottom: 0;
-}
-
-.remove-participant {
-  background: transparent;
-  border: none;
-  color: #c62828;
-  font-size: 18px;
-  cursor: pointer;
-  line-height: 1;
-  padding: 0;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  transition: background-color 0.2s ease;
-}
-
-.remove-participant:hover {
-  background-color: rgba(198, 40, 40, 0.1);
 }
 
 .participants-list li:last-child {
