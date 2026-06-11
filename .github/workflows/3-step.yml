@@ -6,6 +6,12 @@ on:
       - "accelerate-with-copilot"
     paths:
       - "src/static/**"
+  pull_request:
+    branches:
+      - "main"
+    paths:
+      - "src/static/**"
+    types: [opened, synchronize, reopened]
 
 permissions:
   contents: read
@@ -62,9 +68,10 @@ jobs:
         id: changed-files
         uses: tj-actions/changed-files@v47
         with:
-          # For push events, use the previous commit SHA so the action can
-          # compute the files changed in the push range reliably.
-          base_sha: ${{ github.event.before }}
+          # Choose base SHA depending on event: for push use the previous
+          # commit (`github.event.before`), for pull_request use the PR base
+          # commit SHA. This makes detection reliable for both triggers.
+          base_sha: ${{ github.event_name == 'push' && github.event.before || github.event.pull_request.base.sha }}
           files: |
             src/static/app.js
             src/static/styles.css
