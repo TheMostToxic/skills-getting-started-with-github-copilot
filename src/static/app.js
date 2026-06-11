@@ -4,6 +4,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const signupForm = document.getElementById("signup-form");
   const messageDiv = document.getElementById("message");
 
+  const hideMessage = () => {
+    messageDiv.classList.add("hidden");
+  };
+
   // Function to fetch activities from API
   async function fetchActivities() {
     try {
@@ -86,9 +90,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       messageDiv.classList.remove("hidden");
-      setTimeout(() => {
-        messageDiv.classList.add("hidden");
-      }, 5000);
+      setTimeout(hideMessage, 5000);
     } catch (error) {
       messageDiv.textContent = "Failed to remove participant. Please try again.";
       messageDiv.className = "error";
@@ -127,9 +129,7 @@ document.addEventListener("DOMContentLoaded", () => {
       messageDiv.classList.remove("hidden");
 
       // Hide message after 5 seconds
-      setTimeout(() => {
-        messageDiv.classList.add("hidden");
-      }, 5000);
+      setTimeout(hideMessage, 5000);
     } catch (error) {
       messageDiv.textContent = "Failed to sign up. Please try again.";
       messageDiv.className = "error";
