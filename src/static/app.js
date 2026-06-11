@@ -8,6 +8,13 @@ document.addEventListener("DOMContentLoaded", () => {
     messageDiv.classList.add("hidden");
   };
 
+  const showMessage = (type, text) => {
+    messageDiv.textContent = text;
+    messageDiv.className = type;
+    messageDiv.classList.remove("hidden");
+    setTimeout(hideMessage, 5000);
+  };
+
   // Function to fetch activities from API
   async function fetchActivities() {
     try {
@@ -81,16 +88,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const result = await response.json();
       if (response.ok) {
-        messageDiv.textContent = result.message;
-        messageDiv.className = "success";
+        showMessage("success", result.message);
         fetchActivities();
       } else {
-        messageDiv.textContent = result.detail || "Failed to remove participant";
-        messageDiv.className = "error";
+        showMessage("error", result.detail || "Failed to remove participant");
       }
-
-      messageDiv.classList.remove("hidden");
-      setTimeout(hideMessage, 5000);
     } catch (error) {
       messageDiv.textContent = "Failed to remove participant. Please try again.";
       messageDiv.className = "error";
@@ -117,19 +119,12 @@ document.addEventListener("DOMContentLoaded", () => {
       const result = await response.json();
 
       if (response.ok) {
-        messageDiv.textContent = result.message;
-        messageDiv.className = "success";
+        showMessage("success", result.message);
         signupForm.reset();
         await fetchActivities();
       } else {
-        messageDiv.textContent = result.detail || "An error occurred";
-        messageDiv.className = "error";
+        showMessage("error", result.detail || "An error occurred");
       }
-
-      messageDiv.classList.remove("hidden");
-
-      // Hide message after 5 seconds
-      setTimeout(hideMessage, 5000);
     } catch (error) {
       messageDiv.textContent = "Failed to sign up. Please try again.";
       messageDiv.className = "error";
